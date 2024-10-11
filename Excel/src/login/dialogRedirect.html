@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>ProSights Authentication</title>
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script>
+      Office.onReady(() => {
+        console.log("Office.onReady");
+        console.log("uri", window.location.href);
+        if (Office.context.ui.messageParent) {
+          const url = window.location.href;
+          Office.context.ui.messageParent(url);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <p>Please wait while we complete the authentication process...</p>
+  </body>
+</html>
