@@ -11,9 +11,10 @@
   <SupportUrl DefaultValue="https://www.contoso.com/help"/>
   <AppDomains>
     <AppDomain>https://localhost:3000</AppDomain>
-    <AppDomain>https://da16-50-74-121-90.ngrok-free.app</AppDomain>
+    <AppDomain>https://extremely-excited-hawk.ngrok-free.app</AppDomain>
     <AppDomain>https://prosights.co</AppDomain>
     <AppDomain>https://dev-vskefbk21huunnc8.us.auth0.com</AppDomain>
+    <AppDomain>https://storage.googleapis.com</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Workbook"/>

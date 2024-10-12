@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useDropzone } from "react-dropzone";
 import { Text, makeStyles, Image, Button } from "@fluentui/react-components";
-import { getUploadUrl } from "../../helpers/api";
+import { extractTableFromImage, getUploadUrl, uploadImageToGcpBucketUrl } from "../../helpers/api";
+import { createTableFromMarkdown } from "../../helpers/cells";
 
 const useStyles = makeStyles({
   dropzone: {
@@ -39,6 +40,7 @@ const PictureSnip: React.FC = () => {
   const styles = useStyles();
   const [image, setImage] = React.useState<ImageFile | null>(null);
   const [extracting, setExtracting] = React.useState(false);
+  const [extractedText, setExtractedText] = React.useState<string | null>(null);
 
   const onDrop = React.useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -73,23 +75,20 @@ const PictureSnip: React.FC = () => {
 
     setExtracting(true);
     try {
-      const { uploadUrl, bucket_name, path } = await getUploadUrl();
+      const extractedTable = await extractTableFromImage(image.file);
+      setExtractedText(JSON.stringify(extractedTable));
+      console.log("Extracted text:", extractedTable);
 
-      const response = await fetch(uploadUrl, {
-        method: "PUT",
-        body: await image.file.arrayBuffer(),
-        headers: {
-          "Content-Type": "application/octet-stream",
-        },
-      });
+      await createTableFromMarkdown(extractedTable, image.file);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      /*
+      const { uploadUrl, bucket_name, path } = await getUploadUrl(image.file.type);
 
-      console.log("Image uploaded successfully");
+      await uploadImageToGcpBucketUrl(uploadUrl, image.file);
+
       console.log("Bucket:", bucket_name);
       console.log("Path:", path);
+      */
       // Here you can add further processing or UI updates
     } catch (error) {
       console.error("Error during extraction:", error);
@@ -117,6 +116,7 @@ const PictureSnip: React.FC = () => {
       <Button className={styles.extractButton} onClick={handleExtract} disabled={!image || extracting}>
         {extracting ? "Extracting..." : "Extract"}
       </Button>
+      {extractedText && <pre>{extractedText}</pre>}
     </div>
   );
 };
