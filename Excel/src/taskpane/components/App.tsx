@@ -3,6 +3,7 @@ import { DefaultButton } from "@fluentui/react";
 import { User } from "@auth0/auth0-spa-js";
 import { login, logout, getUser, isAuthenticated } from "../../helpers/auth0Client";
 import PictureSnip from "./PictureSnip";
+import PDFViewer from "./PDFViewer";
 
 export interface AppProps {
   title: string;
@@ -72,7 +73,19 @@ const App: React.FC<AppProps> = ({ title, isOfficeInitialized }) => {
           </div>
         );
       case "pdfViewer":
-        return <div>PDF Viewer Tool</div>;
+        return (
+          <div
+            style={{
+              width: "100%",
+              minHeight: "100vh",
+              maxWidth: "100vw",
+              overflowX: "hidden",
+            }}
+          >
+            <DefaultButton onClick={() => setCurrentView("main")}>Home</DefaultButton>
+            <PDFViewer />
+          </div>
+        );
       default:
         return (
           <div className="ms-welcome">

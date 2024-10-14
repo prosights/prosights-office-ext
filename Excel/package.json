@@ -36,9 +36,11 @@
     "@fluentui/react-icons": "^2.0.232",
     "core-js": "^3.36.0",
     "es6-promise": "^4.2.8",
+    "html2canvas": "^1.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.9",
+    "react-pdf": "^9.1.1",
     "regenerator-runtime": "^0.14.1"
   },
   "devDependencies": {

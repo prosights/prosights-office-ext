@@ -15,6 +15,7 @@
     <AppDomain>https://prosights.co</AppDomain>
     <AppDomain>https://dev-vskefbk21huunnc8.us.auth0.com</AppDomain>
     <AppDomain>https://storage.googleapis.com</AppDomain>
+    <AppDomain>https://unpkg.com</AppDomain>
   </AppDomains>
   <Hosts>
     <Host Name="Workbook"/>
