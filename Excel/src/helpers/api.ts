@@ -32,9 +32,8 @@ export async function extractTableFromImage(file: File): Promise<ExtractedTable>
     const response = await fetch(`${API_BASE_URL}/office/extract_table_from_image`, {
       method: "POST",
       body: formData,
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-      },
+      credentials: "include",
+      cache: "no-cache",
     });
 
     if (!response.ok) {
@@ -85,8 +84,8 @@ export async function getUploadUrl(content_type: string): Promise<UploadUrlRespo
       {
         method: "GET",
         cache: "no-cache",
+        credentials: "include",
         headers: {
-          "ngrok-skip-browser-warning": "true",
           Accept: "application/json",
         },
       }

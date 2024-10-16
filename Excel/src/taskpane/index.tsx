@@ -70,10 +70,30 @@ function showMain(event: Office.AddinCommands.Event) {
   console.log("Showing main");
 }
 
+function showStyleSettings(event: Office.AddinCommands.Event) {
+  Office.context.ui.displayDialogAsync(
+    `${window.location.origin}/settingsDialog.html`,
+    { height: 60, width: 30 },
+    (result) => {
+      if (result.status === Office.AsyncResultStatus.Succeeded) {
+        const dialog = result.value;
+        dialog.addEventHandler(Office.EventType.DialogMessageReceived, (arg) => {
+          console.log("Settings updated:", arg);
+          dialog.close();
+          event.completed();
+        });
+      } else {
+        console.error("Error opening settings dialog:", result.error.message);
+        event.completed();
+      }
+    }
+  );
+}
+
 Office.actions.associate("showMain", showMain);
 Office.actions.associate("showPictureSnip", showPictureSnip);
 Office.actions.associate("showPDFViewer", showPDFViewer);
-
+Office.actions.associate("showStyleSettings", showStyleSettings);
 // The add-in command functions need to be available in global scope
 // @ts-ignore
 globalThis.showPictureSnip = showPictureSnip;
@@ -81,3 +101,5 @@ globalThis.showPictureSnip = showPictureSnip;
 globalThis.showPDFViewer = showPDFViewer;
 // @ts-ignore
 globalThis.showMain = showMain;
+// @ts-ignore
+globalThis.showStyleSettings = showStyleSettings;

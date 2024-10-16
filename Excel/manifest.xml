@@ -2,20 +2,32 @@
 <OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0" xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="TaskPaneApp">
   <Id>ab1c4d19-abbf-484a-83ed-68d094cacfe6</Id>
   <Version>1.0.0.0</Version>
-  <ProviderName>Contoso</ProviderName>
+  <ProviderName>ProSights</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="ProSights"/>
-  <Description DefaultValue="A template to get started."/>
-  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
-  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-64.png"/>
-  <SupportUrl DefaultValue="https://www.contoso.com/help"/>
+  <Description DefaultValue="ProSights add-in for Microsoft Excel"/>
+  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>  <!-- Webpack Replace -->
+  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-64.png"/>  <!-- Webpack Replace -->
+  <SupportUrl DefaultValue="https://localhost:3000/help"/>  <!-- Webpack Replace -->
+  <!-- Basic information about the add-in -->
+  <!-- AppDomains are the domains that the add-in can access -->
+  <!-- You must add **every** domain that the add-in needs to access -->
+  <!-- These domains must be https ONLY, Microsoft does not allow Office applications to access http domains -->
+  <!-- For VPCs, you must include their proper respective domains below (nextjs, python, auth0, etc.) -->
   <AppDomains>
-    <AppDomain>https://localhost:3000</AppDomain>
-    <AppDomain>https://extremely-excited-hawk.ngrok-free.app</AppDomain>
+    <!-- ProSights (nextjs-facing) domains -->
+    <AppDomain>https://msoffice.prosights.co</AppDomain>
+    <AppDomain>https://dev-msoffice.prosights.co</AppDomain>
     <AppDomain>https://prosights.co</AppDomain>
+    <AppDomain>https://localhost:3000</AppDomain>
+    <!-- ProSights fastAPI domains (python server) -->
+    <AppDomain>https://dev-fastapi.prosights.co/</AppDomain>
+    <AppDomain>https://localhost:8000/</AppDomain>
+    <!-- Auth0 urls (include VPC auth0 dommains if necessary) -->
     <AppDomain>https://dev-vskefbk21huunnc8.us.auth0.com</AppDomain>
-    <AppDomain>https://storage.googleapis.com</AppDomain>
-    <AppDomain>https://unpkg.com</AppDomain>
+    <!-- External domains -->
+    <AppDomain>https://storage.googleapis.com</AppDomain> <!-- GCP Bucket Access-->
+    <AppDomain>https://unpkg.com</AppDomain><!-- For JS libraries (pdf.js) -->
   </AppDomains>
   <Hosts>
     <Host Name="Workbook"/>
@@ -26,7 +38,7 @@
     </Sets>
   </Requirements>
   <DefaultSettings>
-    <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
+    <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>  <!-- Webpack Replace -->
   </DefaultSettings>
   <Permissions>ReadWriteDocument</Permissions>
   <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">
@@ -95,6 +107,22 @@
                     <FunctionName>showPDFViewer</FunctionName>
                   </Action>
                 </Control>
+                <Control xsi:type="Button" id="StyleSettingsButton">
+                  <Label resid="StyleSettings.Label"/>
+                  <Supertip>
+                    <Title resid="StyleSettings.Label"/>
+                    <Description resid="StyleSettings.Tooltip"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Icon.16x16"/>
+                    <bt:Image size="32" resid="Icon.32x32"/>
+                    <bt:Image size="80" resid="Icon.80x80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <SourceLocation resid="Taskpane.Url" />
+                    <FunctionName>showStyleSettings</FunctionName>
+                  </Action>
+                </Control>
               </Group>
               <Label resid="ProSights.TabLabel"/>
             </CustomTab>
@@ -104,14 +132,14 @@
     </Hosts>
     <Resources>
       <bt:Images>
-        <bt:Image id="Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
-        <bt:Image id="Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
-        <bt:Image id="Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+        <bt:Image id="Icon.16x16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>  <!-- Webpack Replace -->
+        <bt:Image id="Icon.32x32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>  <!-- Webpack Replace -->
+        <bt:Image id="Icon.80x80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>  <!-- Webpack Replace -->
       </bt:Images>
       <bt:Urls>
         <bt:Url id="GetStarted.LearnMoreUrl" DefaultValue="https://go.microsoft.com/fwlink/?LinkId=276812"/>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
-        <bt:Url id="SharedRuntime.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>  <!-- Webpack Replace -->
+        <bt:Url id="SharedRuntime.Url" DefaultValue="https://localhost:3000/taskpane.html"/>  <!-- Webpack Replace -->
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GetStarted.Title" DefaultValue="Get started with your sample add-in!"/>
@@ -121,12 +149,14 @@
         <bt:String id="Extraction.GroupLabel" DefaultValue="Extraction"/>
         <bt:String id="PictureSnip.Label" DefaultValue="Picture Snip"/>
         <bt:String id="PDFViewer.Label" DefaultValue="PDF Viewer"/>
+        <bt:String id="StyleSettings.Label" DefaultValue="Style Settings"/>
       </bt:ShortStrings>
       <bt:LongStrings>
         <bt:String id="GetStarted.Description" DefaultValue="Your sample add-in loaded succesfully. Go to the HOME tab and click the 'Show Taskpane' button to get started."/>
         <bt:String id="TaskpaneButton.Tooltip" DefaultValue="Click to Show a Taskpane"/>
         <bt:String id="PictureSnip.Tooltip" DefaultValue="Open Picture Snip tool"/>
         <bt:String id="PDFViewer.Tooltip" DefaultValue="Open PDF Viewer"/>
+        <bt:String id="StyleSettings.Tooltip" DefaultValue="Open Style Settings"/>
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>

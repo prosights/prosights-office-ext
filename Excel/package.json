@@ -14,6 +14,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
+    "build:local": "webpack --mode local",
+    "local-server": "webpack serve --mode local",
     "dev-server": "webpack serve --mode development",
     "lint": "office-addin-lint check",
     "lint:fix": "office-addin-lint fix",
@@ -26,7 +28,7 @@
     "stop": "office-addin-debugging stop manifest.xml",
     "validate": "office-addin-manifest validate manifest.xml",
     "watch": "webpack --mode development --watch",
-    "start:excel": "cp manifest.xml '/Users/taha/Library/Containers/com.microsoft.Excel/Data/Documents/wef/manifest.xml' && npm run dev-server"
+    "start:excel": "cp manifest.xml '/Users/taha/Library/Containers/com.microsoft.Excel/Data/Documents/wef/manifest.xml' && npm run local-server"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",

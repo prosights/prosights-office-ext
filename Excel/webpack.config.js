@@ -5,8 +5,9 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
 
-const urlDev = "https://localhost:3000/";
-const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
+const urlLocal = "https://localhost:3000/";
+const urlDev = "https://dev-msoffice.prosights.co/";
+const urlProd = "https://msoffice.prosights.co/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
 
 async function getHttpsOptions() {
   const httpsOptions = await devCerts.getHttpsServerOptions();
@@ -14,7 +15,7 @@ async function getHttpsOptions() {
 }
 
 module.exports = async (env, options) => {
-  const dev = options.mode === "development";
+  const mode = options.mode || "local";
   const config = {
     devtool: "source-map",
     entry: {
@@ -71,11 +72,14 @@ module.exports = async (env, options) => {
           {
             from: "manifest*.xml",
             to: "[name]" + "[ext]",
+            // Depending on the mode, replace the local URL in the manifest with the appropriate URL
             transform(content) {
-              if (dev) {
-                return content;
+              if (mode === "local") {
+                return content.toString().replace(new RegExp(urlLocal, "g"), urlDev);
+              } else if (mode === "dev") {
+                return content.toString().replace(new RegExp(urlLocal, "g"), urlDev);
               } else {
-                return content.toString().replace(new RegExp(urlDev, "g"), urlProd);
+                return content.toString().replace(new RegExp(urlLocal, "g"), urlProd);
               }
             },
           },
@@ -95,6 +99,11 @@ module.exports = async (env, options) => {
         filename: "extractImage.html",
         template: "./src/extract-image/extractImage.html",
         chunks: ["polyfill", "vendor", "extractImage"],
+      }),
+      new HtmlWebpackPlugin({
+        filename: "settingsDialog.html",
+        template: "./src/settings/settingsDialog.html",
+        chunks: ["polyfill", "vendor", "settingsDialog"],
       }),
       new webpack.ProvidePlugin({
         Promise: ["es6-promise", "Promise"],
