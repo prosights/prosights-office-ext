@@ -8,6 +8,7 @@
         console.log("Office.onReady");
         console.log("uri", window.location.href);
         if (Office.context.ui.messageParent) {
+          console.log("messageParent");
           const url = window.location.href;
           Office.context.ui.messageParent(url);
         }

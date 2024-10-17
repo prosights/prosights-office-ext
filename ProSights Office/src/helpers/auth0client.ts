@@ -33,6 +33,11 @@ export const login = async (
     openUrl: async (url) => {
       Office.context.ui.displayDialogAsync(url, (asyncResult) => {
         const dialog: Office.Dialog = asyncResult.value;
+        // add event listener for dialog url change
+        dialog.addEventHandler(Office.EventType.DialogEventReceived, (arg: any) => {
+          console.log("dialogEventReceived", arg);
+        });
+
         dialog.addEventHandler(Office.EventType.DialogMessageReceived, async (arg: any) => {
           dialog.close();
           onAuthRedirect(arg);
