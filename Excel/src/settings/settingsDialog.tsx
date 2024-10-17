@@ -62,7 +62,7 @@ const useStyles = makeStyles({
 
 const fontStyles = ["Calibri", "Arial", "Times New Roman"];
 const fontSizes = ["8", "9", "10", "11", "12"];
-const fontColors = ["Calibri", "Black", "White"];
+const fontColors = ["Red", "Black", "White"];
 const fillColors = ["#0E2841", "#FFFFFF", "#DAE9F8"];
 const borderOptions = ["None", "Top, Bottom", "All"];
 const borderColors = ["None", "#000000"];

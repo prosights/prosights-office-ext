@@ -29,9 +29,7 @@
     "start:excel": "cp manifest.xml '/Users/taha/Library/Containers/com.microsoft.Excel/Data/Documents/wef/manifest.xml' && npm run dev-server"
   },
   "dependencies": {
-    "@auth0/auth0-react": "^2.2.4",
     "@auth0/auth0-spa-js": "^2.1.3",
-    "@fluentui/react": "^8.121.3",
     "@fluentui/react-components": "^9.46.8",
     "@fluentui/react-icons": "^2.0.232",
     "core-js": "^3.36.0",
@@ -54,6 +52,7 @@
     "acorn": "^8.11.3",
     "babel-loader": "^9.1.3",
     "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
     "eslint-plugin-office-addins": "^3.0.2",
     "eslint-plugin-react": "^7.28.0",
     "file-loader": "^6.2.0",
@@ -68,8 +67,13 @@
     "office-addin-manifest": "^1.13.4",
     "office-addin-prettier-config": "^1.2.1",
     "os-browserify": "^0.3.0",
+    "postcss": "^8.4.47",
+    "postcss-loader": "^8.1.1",
+    "postcss-preset-env": "^10.0.7",
     "process": "^0.11.10",
     "source-map-loader": "^5.0.0",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.14",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.2",
     "webpack": "^5.90.3",
@@ -80,6 +84,5 @@
   "browserslist": [
     "last 2 versions",
     "ie 11"
-  ],
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  ]
 }

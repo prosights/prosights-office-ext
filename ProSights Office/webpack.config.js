@@ -4,6 +4,7 @@ const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const path = require("path");
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "https://www.contoso.com/"; // CHANGE THIS TO YOUR PRODUCTION DEPLOYMENT LOCATION
@@ -21,9 +22,6 @@ module.exports = async (env, options) => {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
       vendor: ["react", "react-dom", "core-js", "@fluentui/react-components", "@fluentui/react-icons"],
       taskpane: ["./src/taskpane/index.tsx", "./src/taskpane/taskpane.html"],
-      commands: "./src/commands/commands.ts",
-      extractImage: ["./src/extract-image/extractImage.tsx", "./src/extract-image/extractImage.html"],
-      settingsDialog: ["./src/settings/settingsDialog.tsx", "./src/settings/settingsDialog.html"],
     },
     output: {
       clean: true,
@@ -42,6 +40,11 @@ module.exports = async (env, options) => {
               presets: ["@babel/preset-typescript"],
             },
           },
+        },
+        {
+          test: /\.css$/i,
+          include: path.resolve(__dirname, "src"),
+          use: ["style-loader", "css-loader", "postcss-loader"],
         },
         {
           test: /\.tsx?$/,
@@ -85,22 +88,12 @@ module.exports = async (env, options) => {
       new HtmlWebpackPlugin({
         filename: "taskpane.html",
         template: "./src/taskpane/taskpane.html",
-        chunks: ["polyfill", "vendor", "taskpane", "commands", "functions"],
+        chunks: ["polyfill", "vendor", "taskpane"],
       }),
       new HtmlWebpackPlugin({
         filename: "dialogRedirect.html",
         template: "./src/login/dialogRedirect.html",
         chunks: ["dialogRedirect"],
-      }),
-      new HtmlWebpackPlugin({
-        filename: "extractImage.html",
-        template: "./src/extract-image/extractImage.html",
-        chunks: ["polyfill", "vendor", "extractImage"],
-      }),
-      new HtmlWebpackPlugin({
-        filename: "settingsDialog.html",
-        template: "./src/settings/settingsDialog.html",
-        chunks: ["polyfill", "vendor", "settingsDialog"],
       }),
       new webpack.ProvidePlugin({
         Promise: ["es6-promise", "Promise"],
@@ -108,6 +101,8 @@ module.exports = async (env, options) => {
     ],
     devServer: {
       hot: true,
+      liveReload: true,
+      open: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
       },
