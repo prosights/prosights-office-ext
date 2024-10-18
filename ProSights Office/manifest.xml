@@ -12,7 +12,7 @@
   <AppDomains>
     <!-- ProSights (nextjs-facing) domains -->
     <AppDomain>https://dev-office.prosights.co</AppDomain>
-    <AppDomain>https://dev-office.prosights.co</AppDomain>
+    <AppDomain>https://office.prosights.co</AppDomain>
     <AppDomain>https://prosights.co</AppDomain>
     <!-- ProSights fastAPI domains (python server) -->
     <AppDomain>https://dev-fastapi.prosights.co</AppDomain>
