@@ -61,3 +61,92 @@ jobs:
             ${{ github.ref == 'refs/heads/main' && format('us-east1-docker.pkg.dev/prosights-platform/prosights/{0}-image:latest', matrix.service) || format('us-east1-docker.pkg.dev/prosights-platform/prosights/{0}-image:dev', matrix.service) }}
           labels: ${{ steps.meta.outputs.labels }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+deploy:
+    name: Deploy to environment
+    needs: push_to_registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOPPLER_PROJECT: prosights-platform
+          DOPPLER_CONFIG: prd
+          DOPPLER_DEPLOY: prosights-kube
+          DOPPLER_CONF: prd
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+        run: |
+          echo "Deploying to production"
+          
+          # Log in to Docker Hub
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          
+          # Pull the private Docker image
+          docker pull $DOCKER_USERNAME/prosights-vpc:latest
+          
+          # Run the Docker image with environment variables
+          docker run \
+            -e DOPPLER_PROJECT=$DOPPLER_PROJECT \
+            -e DOPPLER_CONFIG=$DOPPLER_CONFIG \
+            -e DOPPLER_DEPLOY=$DOPPLER_DEPLOY \
+            -e DOPPLER_CONF=$DOPPLER_CONF \
+            -e DOPPLER_TOKEN=$DOPPLER_TOKEN \
+            $DOCKER_USERNAME/prosights-vpc:latest
+
+      - name: Deploy to staging
+        if: github.ref == 'refs/heads/dev'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOPPLER_PROJECT: prosights-platform
+          DOPPLER_CONFIG: dev_gcp
+          DOPPLER_DEPLOY: prosights-kube
+          DOPPLER_CONF: dev
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+        run: |
+          echo "Deploying to staging"
+          
+          # Log in to Docker Hub
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          
+          # Pull the private Docker image
+          docker pull $DOCKER_USERNAME/prosights-vpc:dev
+          
+          # Run the Docker image with environment variables
+          docker run \
+            -e DOPPLER_PROJECT=$DOPPLER_PROJECT \
+            -e DOPPLER_CONFIG=$DOPPLER_CONFIG \
+            -e DOPPLER_DEPLOY=$DOPPLER_DEPLOY \
+            -e DOPPLER_CONF=$DOPPLER_CONF \
+            -e DOPPLER_TOKEN=$DOPPLER_TOKEN \
+            $DOCKER_USERNAME/prosights-vpc:dev
+
+      - name: Deploy to Drive By DraftKing
+        if: github.ref == 'refs/heads/drivebydraftking'
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          DOPPLER_PROJECT: prosights-platform
+          DOPPLER_CONFIG: prd_drive
+          DOPPLER_DEPLOY: prosights-kube
+          DOPPLER_CONF: prd_drive
+          DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+        run: |
+          echo "Deploying to VPC Drive By DraftKing"
+          
+          # Log in to Docker Hub
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          
+          # Pull the private Docker image
+          docker pull $DOCKER_USERNAME/prosights-vpc:latest
+          
+          # Run the Docker image with environment variables
+          docker run \
+            -e DOPPLER_PROJECT=$DOPPLER_PROJECT \
+            -e DOPPLER_CONFIG=$DOPPLER_CONFIG \
+            -e DOPPLER_DEPLOY=$DOPPLER_DEPLOY \
+            -e DOPPLER_CONF=$DOPPLER_CONF \
+            -e DOPPLER_TOKEN=$DOPPLER_TOKEN \
+            $DOCKER_USERNAME/prosights-vpc:latest
