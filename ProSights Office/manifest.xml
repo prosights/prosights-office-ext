@@ -5,7 +5,7 @@
   <ProviderName>ProSights</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <DisplayName DefaultValue="ProSights Office"/>
-  <Description DefaultValue="A template to get started."/>
+  <Description DefaultValue="Your native tool for ProSights."/>
   <IconUrl DefaultValue="https:/office.assets/icon-32.png"/>
   <HighResolutionIconUrl DefaultValue="https://office.prosights.co/assets/icon-64.png"/>
   <SupportUrl DefaultValue="https://www.prosights.co/office-addin-help"/>
