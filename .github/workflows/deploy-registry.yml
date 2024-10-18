@@ -54,6 +54,7 @@ jobs:
         with:
           context: .
           file: ./ProSights Office/Dockerfile
+          workdir: ./ProSights Office
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
